@@ -25,7 +25,7 @@ export const register = async (req, res) => {
     )
     const { passwordHash, ...userData } = user._doc
 
-    res.json({
+    res.status(201).json({
       ...userData,
       token,
     })
@@ -42,8 +42,8 @@ export const login = async (req, res) => {
     const user = await UserModel.findOne({ email: req.body.email })
 
     if (!user) {
-      return res.status(404).json({
-        message: 'Пользователь не найден',
+      return res.status(401).json({
+        message: 'Неверный логин или пароль',
       })
     }
 
@@ -53,7 +53,7 @@ export const login = async (req, res) => {
     )
 
     if (!isValidPass) {
-      return res.status(400).json({
+      return res.status(401).json({
         message: 'Неверный логин или пароль',
       })
     }
@@ -64,7 +64,7 @@ export const login = async (req, res) => {
 
     const { passwordHash, ...userData } = user._doc
 
-    res.json({
+    res.status(200).json({
       ...userData,
       token,
     })
@@ -81,7 +81,7 @@ export const getMe = async (req, res) => {
     const user = await UserModel.findById(req.userId)
 
     if (!user) {
-      return res.status(404).json({
+      return res.status(401).json({
         message: 'Пользователь не найден',
       })
     }
