@@ -16,9 +16,7 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
   try {
-    const boards = await BoardModel.find({ user: req.user._id }).sort(
-      '-position'
-    )
+    const boards = await BoardModel.find({ user: req.userId }).sort('-position')
     res.status(200).json(boards)
   } catch (error) {
     res.status(500).json(error)
