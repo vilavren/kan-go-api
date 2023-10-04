@@ -55,6 +55,8 @@ app.post('/boards', checkAuth, BoardController.create)
 app.get('/boards', checkAuth, BoardController.getAll)
 app.put('/boards', checkAuth, BoardController.updatePosition)
 
+app.get('/boards/:id', checkAuth, BoardController.getOne)
+
 app.listen(process.env.PORT, (err) => {
   if (err) {
     return console.log(err)
