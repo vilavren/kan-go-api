@@ -51,8 +51,8 @@ app.post(
 )
 app.get('/auth/me', checkAuth, UserController.getMe)
 
-app.get('/', checkAuth, BoardController.create)
-app.get('/', checkAuth, BoardController.getAll)
+app.post('/boards', checkAuth, BoardController.create)
+app.get('/boards', checkAuth, BoardController.getAll)
 
 app.listen(process.env.PORT, (err) => {
   if (err) {

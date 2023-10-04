@@ -1,12 +1,14 @@
 import BoardModel from '../models/Board.js'
 
-export const create = async () => {
+export const create = async (req, res) => {
   try {
     const boardsCount = await BoardModel.find().count()
-    const board = await new BoardModel({
-      user: req.user._id,
+    const doc = new BoardModel({
+      user: req.userId,
       position: boardsCount > 0 ? boardsCount : 0,
     })
+    const board = await doc.save()
+    res.status(201).json(board)
   } catch (error) {
     res.status(500).json(error)
   }

@@ -3,7 +3,7 @@ import { schemaOptions } from './modelOptions.js'
 
 const BoardShema = new mongoose.Schema(
   {
-    name: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
