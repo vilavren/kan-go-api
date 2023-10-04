@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { schemaOptions } from './modelOptions.js'
 
 const UserSchema = new mongoose.Schema(
   {
@@ -17,9 +18,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  schemaOptions
 )
 
 export default mongoose.model('User', UserSchema)

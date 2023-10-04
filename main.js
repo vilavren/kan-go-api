@@ -7,9 +7,10 @@ import multer from 'multer'
 import cors from 'cors'
 import fs from 'fs'
 
-import { UserController } from './controllers/index.js'
-import { checkAuth, handleValidationErrors } from './utils/index.js'
-import { loginValidation, registerValidation } from './utils/validations.js'
+import { checkAuth, handleValidationErrors } from './src/utils/index.js'
+import { loginValidation, registerValidation } from './src/utils/validations.js'
+import { UserController } from './src/controllers/index.js'
+import { BoardController } from './src/controllers/index.js'
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -49,6 +50,9 @@ app.post(
   UserController.register
 )
 app.get('/auth/me', checkAuth, UserController.getMe)
+
+app.get('/', checkAuth, BoardController.create)
+app.get('/', checkAuth, BoardController.getAll)
 
 app.listen(process.env.PORT, (err) => {
   if (err) {
