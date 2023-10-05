@@ -57,3 +57,45 @@ export const getOne = async (req, res) => {
     res.status(500).json(error)
   }
 }
+
+export const update = async (req, res) => {
+  const boardId = req.params.id
+
+  const { title, description, favorite } = req.body
+
+  try {
+    if (title === '') req.body.title = 'Без названия'
+    if (description === '') req.body.description = 'Описание'
+
+    const currentBoard = await BoardModel.findOne({
+      user: req.userId,
+      _id: boardId,
+    })
+    if (!currentBoard) return res.status(404).json('Не найдено')
+
+    if (favorite !== undefined && currentBoard.favorite !== favorite) {
+      const favorites = await BoardModel.find({
+        user: currentBoard.user,
+        favorite: true,
+        _id: { $ne: boardId },
+      }).sort('favoritePosition')
+      if (favorite) {
+        req.body.favoritePosition = favorites.length > 0 ? favorites.length : 0
+      } else {
+        for (const key in favorites) {
+          const element = favorite[key]
+          await BoardModel.findByIdAndUpdate(element.id, {
+            $set: { favoritePosition: key },
+          })
+        }
+      }
+    }
+
+    const board = await BoardModel.findByIdAndUpdate(boardId, {
+      $set: req.body,
+    })
+    res.status(200).json(board)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
