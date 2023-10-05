@@ -23,11 +23,11 @@ const BoardShema = new mongoose.Schema(
     position: {
       type: Number,
     },
-    favourite: {
+    favorite: {
       type: Boolean,
       default: false,
     },
-    favouritePosition: {
+    favoritePosition: {
       type: Number,
       default: 0,
     },
