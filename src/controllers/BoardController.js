@@ -99,3 +99,15 @@ export const update = async (req, res) => {
     res.status(500).json(error)
   }
 }
+
+export const getFavorites = async (req, res) => {
+  try {
+    const favorites = await BoardModel.find({
+      user: req.userId,
+      favorite: true,
+    }).sort('-favoritePosition')
+    res.status(200).json(favorites)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
