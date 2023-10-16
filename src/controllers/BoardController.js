@@ -46,7 +46,7 @@ export const getOne = async (req, res) => {
     if (!board) return res.status(404).json('Не найдено')
     const sections = await SectionModel.find({ board: boardId })
     for (const section of sections) {
-      const tasks = await Task.find({ section: section.id })
+      const tasks = await TaskModel.find({ section: section.id })
         .populate('section')
         .sort('-position')
       section._doc.tasks = tasks

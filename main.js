@@ -11,6 +11,7 @@ import { checkAuth, handleValidationErrors } from './src/utils/index.js'
 import { loginValidation, registerValidation } from './src/utils/validations.js'
 import { UserController } from './src/controllers/index.js'
 import { BoardController } from './src/controllers/index.js'
+import { SectionController } from './src/controllers/index.js'
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -59,6 +60,18 @@ app.put('/boards/:id', checkAuth, BoardController.update)
 app.get('/favorites', checkAuth, BoardController.getFavorites)
 app.put('/favorites', checkAuth, BoardController.updateFavoritesPosition)
 app.delete('/boards/:id', checkAuth, BoardController.remove)
+
+app.post('/boards/:boardId/sections', checkAuth, SectionController.create)
+app.put(
+  '/boards/:boardId/sections/:sectionId',
+  checkAuth,
+  SectionController.update
+)
+app.delete(
+  '/boards/:boardId/sections/:sectionId',
+  checkAuth,
+  SectionController.remove
+)
 
 app.listen(process.env.PORT, (err) => {
   if (err) {
