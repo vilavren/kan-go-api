@@ -58,6 +58,7 @@ app.get('/boards/:id', checkAuth, BoardController.getOne)
 app.put('/boards/:id', checkAuth, BoardController.update)
 app.get('/favorites', checkAuth, BoardController.getFavorites)
 app.put('/favorites', checkAuth, BoardController.updateFavoritesPosition)
+app.delete('/boards/:id', checkAuth, BoardController.remove)
 
 app.listen(process.env.PORT, (err) => {
   if (err) {
