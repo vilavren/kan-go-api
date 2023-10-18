@@ -17,3 +17,14 @@ export const create = async (req, res) => {
     res.status(500).json(error)
   }
 }
+
+export const update = async (req, res) => {
+  const taskId = req.params.taskId
+
+  try {
+    const task = await TaskModel.findByIdAndUpdate(taskId, { $set: req.body })
+    res.status(200).json(task)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
