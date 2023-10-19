@@ -2,7 +2,7 @@ import SectionModel from '../models/Section.js'
 import TaskModel from '../models/Task.js'
 
 export const create = async (req, res) => {
-  const sectionId = req.params.sectionId
+  const { sectionId } = req.params
 
   try {
     const section = await SectionModel.findById(sectionId)
@@ -19,11 +19,31 @@ export const create = async (req, res) => {
 }
 
 export const update = async (req, res) => {
-  const taskId = req.params.taskId
+  const { taskId } = req.params
 
   try {
     const task = await TaskModel.findByIdAndUpdate(taskId, { $set: req.body })
     res.status(200).json(task)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
+export const remove = async (req, res) => {
+  const { taskId } = req.params
+
+  try {
+    const currentTask = await TaskModel.findById(taskId)
+    await TaskModel.deleteOne({ _id: taskId })
+    const tasks = await TaskModel.find({ section: currentTask.section })
+
+    for (const key of tasks) {
+      await TaskModel.findByIdAndUpdate(tasks[key].id, {
+        $set: { position: key },
+      })
+    }
+
+    res.status(200).json('deleted')
   } catch (error) {
     res.status(500).json(error)
   }

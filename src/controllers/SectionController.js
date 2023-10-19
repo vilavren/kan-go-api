@@ -2,7 +2,7 @@ import SectionModel from '../models/Section.js'
 import TaskModel from '../models/Task.js'
 
 export const create = async (req, res) => {
-  const boardId = req.params.boardId
+  const { boardId } = req.params
 
   try {
     const section = await SectionModel.create({ board: boardId })
