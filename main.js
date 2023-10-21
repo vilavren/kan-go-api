@@ -9,7 +9,7 @@ import fs from 'fs'
 
 import { checkAuth, handleValidationErrors } from './src/utils/index.js'
 import { loginValidation, registerValidation } from './src/utils/validations.js'
-import { UserController } from './src/controllers/index.js'
+import { TaskController, UserController } from './src/controllers/index.js'
 import { BoardController } from './src/controllers/index.js'
 import { SectionController } from './src/controllers/index.js'
 
@@ -52,6 +52,7 @@ app.post(
 )
 app.get('/auth/me', checkAuth, UserController.getMe)
 
+// board
 app.post('/boards', checkAuth, BoardController.create)
 app.get('/boards', checkAuth, BoardController.getAll)
 app.put('/boards', checkAuth, BoardController.updatePosition)
@@ -61,6 +62,7 @@ app.get('/favorites', checkAuth, BoardController.getFavorites)
 app.put('/favorites', checkAuth, BoardController.updateFavoritesPosition)
 app.delete('/boards/:id', checkAuth, BoardController.remove)
 
+// section
 app.post('/boards/:boardId/sections', checkAuth, SectionController.create)
 app.put(
   '/boards/:boardId/sections/:sectionId',
@@ -72,6 +74,16 @@ app.delete(
   checkAuth,
   SectionController.remove
 )
+
+// task
+app.post('/boards/:boardId/tasks', checkAuth, TaskController.create)
+app.put(
+  '/boards/:boardId/tasks/update-position',
+  checkAuth,
+  TaskController.updatePosition
+)
+app.put('/boards/:boardId/tasks/:taskId', checkAuth, TaskController.update)
+app.delete('/boards/:boardId/tasks/:taskId', checkAuth, TaskController.remove)
 
 app.listen(process.env.PORT, (err) => {
   if (err) {
