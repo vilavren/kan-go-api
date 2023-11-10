@@ -15,8 +15,11 @@ import { SectionController } from './src/controllers/index.js'
 
 mongoose
   .connect(process.env.MONGODB_URI)
-  .then(() => console.log('DB - OK'))
-  .catch((err) => console.log('DB - error', err))
+  .then(() => {
+    console.log('DB: OK')
+    console.log('DB name:', mongoose.connection.name)
+  })
+  .catch((err) => console.log('DB: error', err))
 
 const app = express()
 
@@ -38,6 +41,7 @@ app.use(express.json())
 app.use(cors())
 app.use('/uploads', express.static('uploads'))
 
+// auth
 app.post(
   '/auth/login',
   loginValidation,
@@ -90,5 +94,5 @@ app.listen(process.env.PORT, (err) => {
     return console.log(err)
   }
   console.log('PORT:', process.env.PORT)
-  console.log('Server - OK')
+  console.log('Server: OK')
 })
