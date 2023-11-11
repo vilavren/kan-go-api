@@ -83,7 +83,7 @@ export const update = async (req, res) => {
         req.body.favoritePosition = favorites.length > 0 ? favorites.length : 0
       } else {
         for (const key in favorites) {
-          const element = favorite[key]
+          const element = favorites[key]
           await BoardModel.findByIdAndUpdate(element.id, {
             $set: { favoritePosition: key },
           })
